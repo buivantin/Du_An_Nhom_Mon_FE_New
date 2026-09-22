@@ -67,9 +67,9 @@ const filePath = getFilePath(req.params.topic);
     const newNote = {
         id: Date.now().toString(),
         title: req.body.title || "Không tiêu đề",
-        content: req.body.ng(),
-        updatedAt: new content || "",
-        createdAt: new Date().toISOStriDate().toISOString()
+        content: req.body.content || "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
     };
         notes.push(newNote);
         fs.writeFileSync(filePath, JSON.stringify(notes, null, 2), 'utf8');
@@ -109,4 +109,5 @@ app.delete('/api/notes/:topic/:id', (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Lỗi xóa ghi chú" });
     }
+});
 app.listen(PORT, () => console.log(`Backend chạy tại http://localhost:${PORT}`));
