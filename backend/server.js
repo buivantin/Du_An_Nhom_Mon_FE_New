@@ -189,7 +189,7 @@ app.put('/api/private/:topic/:id', (req, res) => {
 app.delete('/api/private/notes/:id', (req, res) => {
     
     try {
-        let notes = JSON.parse(fs.readFileSync(privatepNotesFile, 'utf8'));
+        let notes = JSON.parse(fs.readFileSync(privateNotesFile, 'utf8'));
         const newNotes = notes.filter(n => n.id !== req.params.id);
         fs.writeFileSync(privateNotesFile, JSON.stringify(newNotes, null, 2), 'utf8');
         res.json({ success: true, message: "Đã xóa thành công" });
