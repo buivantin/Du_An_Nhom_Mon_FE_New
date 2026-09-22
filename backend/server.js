@@ -165,8 +165,8 @@ app.post('/api/private/notes', (req, res) => {
         res.status(500).json({ message: "Lỗi thêm ghi chú kín" });
     }
 });
-// 3. Sửa ghi chú (PUT)
-app.put('/api/private/:topic/:id', (req, res) => {
+// 4. Sửa ghi chú (PUT)
+app.put('/api/private/notes/:id', (req, res) => {
     
     try {
         let notes = JSON.parse(fs.readFileSync(privateNotesFile, 'utf8'));
@@ -185,7 +185,7 @@ app.put('/api/private/:topic/:id', (req, res) => {
         res.status(500).json({ message: "Lỗi cập nhật ghi chú" });
     }
 });
-// 4. Xóa ghi chú (DELETE)
+// 5. Xóa ghi chú (DELETE)
 app.delete('/api/private/notes/:id', (req, res) => {
     
     try {
