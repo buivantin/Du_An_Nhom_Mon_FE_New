@@ -186,7 +186,7 @@ app.put('/api/private/:topic/:id', (req, res) => {
     }
 });
 // 4. Xóa ghi chú (DELETE)
-app.delete('/api/notes/:topic/:id', (req, res) => {
+app.delete('/api/private/notes/:id', (req, res) => {
     
     try {
         let notes = JSON.parse(fs.readFileSync(privatepNotesFile, 'utf8'));
