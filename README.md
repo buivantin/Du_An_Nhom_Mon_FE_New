@@ -1,6 +1,6 @@
 # ĐỒ ÁN MÔN HỌC: ỨNG DỤNG QUẢN LÝ GHI CHÚ (REACTJS & NODEJS)
-**Giảng viên hướng dẫn:** [Tên giảng viên]
-**Nhóm thực hiện:** Nhóm [Số nhóm]
+**Giảng viên hướng dẫn:** [Lữ Cao Tiến]
+**Nhóm thực hiện:** Nhóm [14]
 **Thành viên:**
 1. [Bùi Văn Tín] - [0306241414] - Vai trò: PM & QA
 2. [Trần Thanh Hồ] - [0306241279] - Vai trò: Frontend Developer
