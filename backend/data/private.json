@@ -5,5 +5,12 @@
     "content": "Đây là dữ liệu gửi thử nghiệm từ Postman.",
     "createdAt": "2026-09-22T14:57:25.825Z",
     "updatedAt": "2026-09-22T14:57:25.825Z"
+  },
+  {
+    "id": "1790096351035",
+    "title": "Tai khoan ngan hang",
+    "content": "stk:123456789 mk:buivantin",
+    "createdAt": "2026-09-22T16:59:11.035Z",
+    "updatedAt": "2026-09-22T16:59:15.921Z"
   }
 ]
