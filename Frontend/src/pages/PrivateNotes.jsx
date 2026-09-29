@@ -8,6 +8,7 @@ function PrivateNotes() {
     const [passwordInput, setPasswordInput] = useState('');
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState({ id: null, title: '', content: '' });
+    const [searchQuery, setSearchQuery] = useState('');
 
     /* =========================================================
        VÙNG 2: LOGIC (Xác thực & Fetch Data)
@@ -38,6 +39,7 @@ function PrivateNotes() {
         })
         .catch(err => alert("Lỗi kết nối Backend!"));
     };
+    
 
     // Lấy danh sách ghi chú riêng tư
     const fetchPrivateNotes = () => {
@@ -46,7 +48,12 @@ function PrivateNotes() {
             .then(data => setNotes(data))
             .catch(err => console.error("Lỗi lấy danh sách:", err));
     };
-
+    const filteredNotes = notes.filter(note => {
+    const keyword = searchQuery.toLowerCase().trim();
+    const titleMatch = (note.title || '').toLowerCase().includes(keyword);
+    const contentMatch = (note.content || '').toLowerCase().includes(keyword);
+    return titleMatch || contentMatch;
+     });
     // Lưu ghi chú (Thêm mới hoặc Cập nhật)
     const handleSave = () => {
         if (!formData.title.trim()) {
@@ -118,6 +125,17 @@ function PrivateNotes() {
     return (
         <div style={{ padding: '20px' }}>
             <h2 style={{ color: 'red' }}>🔐 Khu vực Ghi chú Riêng tư</h2>
+            {/* 3. THANH TÌM KIẾM */}
+      <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <strong>Tìm kiếm: </strong>
+        <input
+          type="text"
+          placeholder="Nhập tiêu đề hoặc nội dung bảo mật..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '6px 10px', width: '250px', borderRadius: '4px', border: '1px solid #ccc' }}
+        />
+      </div>
             
             {/* Form nhập liệu */}
             <div style={{ border: '1px solid red', padding: '15px', marginBottom: '20px', borderRadius: '5px' }}>
@@ -152,8 +170,8 @@ function PrivateNotes() {
 
             {/* Danh sách */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                {notes.length === 0 && <p>Chưa có ghi chú riêng tư nào.</p>}
-                {notes.map(note => (
+                {filteredNotes.length === 0 && <p>Chưa có ghi chú riêng tư nào.</p>}
+                {filteredNotes.map(note => (
                     <div key={note.id} style={{ border: '1px solid red', padding: '15px', borderRadius: '5px' }}>
                         <h4 style={{ margin: '0 0 10px 0' }}>{note.title}</h4>
                         <p style={{ whiteSpace: 'pre-wrap' }}>{note.content}</p>
