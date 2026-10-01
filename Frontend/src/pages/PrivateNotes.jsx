@@ -8,7 +8,11 @@ function PrivateNotes() {
     const [passwordInput, setPasswordInput] = useState('');
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState({ id: null, title: '', content: '' });
+<<<<<<< HEAD
     const [searchTerm, setSearchTerm] = useState('');
+=======
+    const [searchQuery, setSearchQuery] = useState('');
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
 
     /* =========================================================
        VÙNG 2: LOGIC (Xác thực & Fetch Data)
@@ -39,6 +43,7 @@ function PrivateNotes() {
         })
         .catch(err => alert("Lỗi kết nối Backend!"));
     };
+    
 
     // Lấy danh sách ghi chú riêng tư
     const fetchPrivateNotes = () => {
@@ -47,7 +52,12 @@ function PrivateNotes() {
             .then(data => setNotes(data))
             .catch(err => console.error("Lỗi lấy danh sách:", err));
     };
-
+    const filteredNotes = notes.filter(note => {
+    const keyword = searchQuery.toLowerCase().trim();
+    const titleMatch = (note.title || '').toLowerCase().includes(keyword);
+    const contentMatch = (note.content || '').toLowerCase().includes(keyword);
+    return titleMatch || contentMatch;
+     });
     // Lưu ghi chú (Thêm mới hoặc Cập nhật)
     const handleSave = () => {
         if (!formData.title.trim()) {
@@ -134,6 +144,7 @@ function PrivateNotes() {
     return (
         <div style={{ padding: '20px' }}>
             <h2 style={{ color: 'red' }}>🔐 Khu vực Ghi chú Riêng tư</h2>
+<<<<<<< HEAD
 
             {/* Ô TÌM KIẾM - THÊM MỚI */}
             <div style={{ marginBottom: '15px' }}>
@@ -153,6 +164,19 @@ function PrivateNotes() {
                     }}
                 />
             </div>
+=======
+            {/* 3. THANH TÌM KIẾM */}
+      <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <strong>Tìm kiếm: </strong>
+        <input
+          type="text"
+          placeholder="Nhập tiêu đề hoặc nội dung bảo mật..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '6px 10px', width: '250px', borderRadius: '4px', border: '1px solid #ccc' }}
+        />
+      </div>
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
             
             {/* Form nhập liệu */}
             <div style={{ border: '1px solid red', padding: '15px', marginBottom: '20px', borderRadius: '5px' }}>
@@ -187,12 +211,16 @@ function PrivateNotes() {
 
             {/* Danh sách */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+<<<<<<< HEAD
                 {notes.length === 0 && <p>Chưa có ghi chú riêng tư nào.</p>}
                 {notes.length > 0 && filteredNotes.length === 0 && (
                     <p style={{ color: '#999', fontStyle: 'italic', gridColumn: 'span 2', textAlign: 'center' }}>
                         Không tìm thấy ghi chú nào khớp với từ khóa "{searchTerm}".
                     </p>
                 )}
+=======
+                {filteredNotes.length === 0 && <p>Chưa có ghi chú riêng tư nào.</p>}
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
                 {filteredNotes.map(note => (
                     <div key={note.id} style={{ border: '1px solid red', padding: '15px', borderRadius: '5px' }}>
                         <h4 style={{ margin: '0 0 10px 0' }}>{note.title}</h4>

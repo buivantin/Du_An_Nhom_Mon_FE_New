@@ -7,7 +7,11 @@ function Notes() {
     const [topic, setTopic] = useState('hoc-tap');
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState({ id: null, title: '', content: '' });
+<<<<<<< HEAD
     const [searchTerm, setSearchTerm] = useState('');
+=======
+    const [searchQuery, setSearchQuery] = useState('');
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
 
     /* =========================================================
        VÙNG 2: XỬ LÝ LOGIC & GỌI API
@@ -24,6 +28,7 @@ function Notes() {
     // Tự động gọi API mỗi khi đổi topic
     useEffect(() => {
         fetchNotes();
+        setSearchQuery('');
     }, [topic]);
 
     // Hàm xử lý Lưu (Thêm mới hoặc Cập nhật)
@@ -74,6 +79,16 @@ function Notes() {
     const handleEdit = (note) => {
         setFormData({ id: note.id, title: note.title, content: note.content });
     };
+    const filteredNotes = notes.filter(note => {
+    const keyword = searchQuery.toLowerCase().trim();
+    const titleMatch = note.title.toLowerCase().includes(keyword);
+    const contentMatch = note.content.toLowerCase().includes(keyword);
+    return titleMatch || contentMatch;
+  });
+
+    const sortedNotes = [...filteredNotes].sort((a, b) => {
+  return b.id - a.id;
+  });
 
     /* =========================================================
        VÙNG 3: RENDER GIAO DIỆN (UI/CSS)
@@ -82,6 +97,7 @@ function Notes() {
         <div style={{ padding: '20px' }}>
             <h2>📝 Ghi chú Công khai</h2>
 
+<<<<<<< HEAD
             {/* 3.1. Vùng chọn chủ đề và tìm kiếm */}
             <div style={{ marginBottom: '20px', display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <div>
@@ -115,6 +131,33 @@ function Notes() {
                     />
                 </div>
             </div>
+=======
+            {/* 3.1. Vùng chọn chủ đề */}
+          <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+                <div>
+                <strong>Chủ đề: </strong>
+                <select 
+                    value={topic} 
+                    onChange={(e) => setTopic(e.target.value)}
+                    style={{ padding: '5px', marginLeft: '10px' }}
+                >
+                    <option value="hoc-tap">Học tập</option>
+                    <option value="cong-viec">Công việc</option>
+                    <option value="ca-nhan">Cá nhân</option>
+                </select>
+                </div>
+                <div>
+          <strong>Tìm kiếm: </strong>
+          <input
+            type="text"
+            placeholder="Nhập tiêu đề hoặc nội dung..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ padding: '5px', width: '250px' }}
+          />
+        </div>
+      </div>
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
 
             {/* 3.2. Form Nhập liệu */}
             <div style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px', borderRadius: '5px' }}>
@@ -149,6 +192,7 @@ function Notes() {
 
             {/* 3.3. Danh sách thẻ ghi chú */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+<<<<<<< HEAD
                 {notes.length === 0 && <p>Chưa có ghi chú nào trong chủ đề này.</p>}
                 {notes.length > 0 && filteredNotes.length === 0 && (
                     <p style={{ color: '#999', fontStyle: 'italic', gridColumn: 'span 2', textAlign: 'center' }}>
@@ -156,6 +200,10 @@ function Notes() {
                     </p>
                 )}
                 {filteredNotes.map(note => (
+=======
+                {sortedNotes.length === 0 && <p>Chưa có ghi chú nào trong chủ đề này.</p>}
+                {sortedNotes.map(note => (
+>>>>>>> c6597c46cff23c3ba363c698f69a60088ed9faeb
                     <div 
                         key={note.id} 
                         style={{ border: '1px solid #007bff', padding: '15px', borderRadius: '5px' }}
