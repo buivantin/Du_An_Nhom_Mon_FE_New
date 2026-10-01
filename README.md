@@ -35,3 +35,21 @@ hệ thống.
 Web không yêu cầu đăng nhập tài khoản.
 Để xem khu vực Ghi chú riêng tư, vui lòng vào menu "Cài đặt" để tạo mật khẩu mới.
 ---
+## 5. Tính năng nâng cao (Bổ sung)
+
+Ngoài các tính năng cơ bản theo yêu cầu, nhóm đã phát triển thêm:
+
+### 5.1. Tìm kiếm ghi chú
+- Tìm kiếm theo từ khóa trong **tiêu đề** hoặc **nội dung**.
+- Áp dụng cho cả **Ghi chú công khai** và **Ghi chú riêng tư**.
+- Kết quả lọc ngay lập tức khi gõ (real-time).
+
+### 5.2. Sắp xếp theo ngày gần nhất
+- Ghi chú **mới nhất** (theo `updatedAt`) luôn hiển thị **đầu tiên**.
+- Khi sửa ghi chú, ghi chú đó tự động nhảy lên đầu danh sách.
+
+### 5.3. Phân trang
+- Mỗi trang hiển thị **4 ghi chú**.
+- Có nút điều hướng: **Trước / 1 / 2 / 3 / Sau**.
+- Thông tin phân trang: "Hiển thị X - Y / Z ghi chú".
+
