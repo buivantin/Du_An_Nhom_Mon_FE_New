@@ -7,6 +7,7 @@ function Notes() {
     const [topic, setTopic] = useState('hoc-tap');
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState({ id: null, title: '', content: '' });
+    const [searchTerm, setSearchTerm] = useState('');
 
     /* =========================================================
        VÙNG 2: XỬ LÝ LOGIC & GỌI API
@@ -27,7 +28,6 @@ function Notes() {
 
     // Hàm xử lý Lưu (Thêm mới hoặc Cập nhật)
     const handleSave = () => {
-        // Kiểm tra dữ liệu đầu vào (Edge Case - Trang 41)
         if (!formData.title.trim()) {
             alert("Vui lòng nhập tiêu đề!");
             return;
@@ -45,8 +45,8 @@ function Notes() {
         })
         .then(res => res.json())
         .then(() => {
-            fetchNotes(); // Tải lại danh sách
-            setFormData({ id: null, title: '', content: '' }); // Reset form
+            fetchNotes();
+            setFormData({ id: null, title: '', content: '' });
         })
         .catch(err => alert("Lỗi khi lưu ghi chú!"));
     };
@@ -60,6 +60,16 @@ function Notes() {
         }
     };
 
+    // Lọc ghi chú theo từ khóa tìm kiếm
+    const filteredNotes = notes.filter(note => {
+        const keyword = searchTerm.toLowerCase().trim();
+        if (!keyword) return true;
+        return (
+            note.title.toLowerCase().includes(keyword) ||
+            note.content.toLowerCase().includes(keyword)
+        );
+    });
+
     // Hàm đưa dữ liệu cũ lên form để sửa
     const handleEdit = (note) => {
         setFormData({ id: note.id, title: note.title, content: note.content });
@@ -72,18 +82,38 @@ function Notes() {
         <div style={{ padding: '20px' }}>
             <h2>📝 Ghi chú Công khai</h2>
 
-            {/* 3.1. Vùng chọn chủ đề */}
-            <div style={{ marginBottom: '20px' }}>
-                <strong>Chủ đề: </strong>
-                <select 
-                    value={topic} 
-                    onChange={(e) => setTopic(e.target.value)}
-                    style={{ padding: '5px', marginLeft: '10px' }}
-                >
-                    <option value="hoc-tap">Học tập</option>
-                    <option value="cong-viec">Công việc</option>
-                    <option value="ca-nhan">Cá nhân</option>
-                </select>
+            {/* 3.1. Vùng chọn chủ đề và tìm kiếm */}
+            <div style={{ marginBottom: '20px', display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div>
+                    <strong>Chủ đề: </strong>
+                    <select 
+                        value={topic} 
+                        onChange={(e) => setTopic(e.target.value)}
+                        style={{ padding: '5px', marginLeft: '10px' }}
+                    >
+                        <option value="hoc-tap">Học tập</option>
+                        <option value="cong-viec">Công việc</option>
+                        <option value="ca-nhan">Cá nhân</option>
+                    </select>
+                </div>
+
+                {/* Ô TÌM KIẾM */}
+                <div style={{ flex: 1, minWidth: '250px' }}>
+                    <input
+                        type="text"
+                        placeholder="🔍 Tìm kiếm theo tiêu đề hoặc nội dung..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            border: '1px solid #ccc',
+                            borderRadius: '5px',
+                            fontSize: '14px',
+                            boxSizing: 'border-box'
+                        }}
+                    />
+                </div>
             </div>
 
             {/* 3.2. Form Nhập liệu */}
@@ -93,13 +123,13 @@ function Notes() {
                     placeholder="Tiêu đề"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
+                    style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
                 />
                 <textarea
                     placeholder="Nội dung"
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    style={{ display: 'block', width: '100%', height: '80px', marginBottom: '10px', padding: '8px' }}
+                    style={{ display: 'block', width: '100%', height: '80px', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
                 />
                 <button 
                     onClick={handleSave} 
@@ -120,7 +150,12 @@ function Notes() {
             {/* 3.3. Danh sách thẻ ghi chú */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                 {notes.length === 0 && <p>Chưa có ghi chú nào trong chủ đề này.</p>}
-                {notes.map(note => (
+                {notes.length > 0 && filteredNotes.length === 0 && (
+                    <p style={{ color: '#999', fontStyle: 'italic', gridColumn: 'span 2', textAlign: 'center' }}>
+                        Không tìm thấy ghi chú nào khớp với từ khóa "{searchTerm}".
+                    </p>
+                )}
+                {filteredNotes.map(note => (
                     <div 
                         key={note.id} 
                         style={{ border: '1px solid #007bff', padding: '15px', borderRadius: '5px' }}

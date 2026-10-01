@@ -8,6 +8,7 @@ function PrivateNotes() {
     const [passwordInput, setPasswordInput] = useState('');
     const [notes, setNotes] = useState([]);
     const [formData, setFormData] = useState({ id: null, title: '', content: '' });
+    const [searchTerm, setSearchTerm] = useState('');
 
     /* =========================================================
        VÙNG 2: LOGIC (Xác thực & Fetch Data)
@@ -81,9 +82,24 @@ function PrivateNotes() {
         }
     };
 
+    // Lọc ghi chú theo từ khóa tìm kiếm
+    const filteredNotes = notes.filter(note => {
+        const keyword = searchTerm.toLowerCase().trim();
+        if (!keyword) return true;
+        return (
+            note.title.toLowerCase().includes(keyword) ||
+            note.content.toLowerCase().includes(keyword)
+        );
+    });
+
     // Đưa dữ liệu lên form để sửa
     const handleEdit = (note) => {
         setFormData({ id: note.id, title: note.title, content: note.content });
+    };
+
+    // Hủy chỉnh sửa
+    const handleCancelEdit = () => {
+        setFormData({ id: null, title: '', content: '' });
     };
 
     /* =========================================================
@@ -118,6 +134,25 @@ function PrivateNotes() {
     return (
         <div style={{ padding: '20px' }}>
             <h2 style={{ color: 'red' }}>🔐 Khu vực Ghi chú Riêng tư</h2>
+
+            {/* Ô TÌM KIẾM - THÊM MỚI */}
+            <div style={{ marginBottom: '15px' }}>
+                <input
+                    type="text"
+                    placeholder="🔍 Tìm kiếm ghi chú riêng tư..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        border: '1px solid #dc3545',
+                        borderRadius: '5px',
+                        fontSize: '14px',
+                        backgroundColor: '#fff5f5',
+                        boxSizing: 'border-box'
+                    }}
+                />
+            </div>
             
             {/* Form nhập liệu */}
             <div style={{ border: '1px solid red', padding: '15px', marginBottom: '20px', borderRadius: '5px' }}>
@@ -126,23 +161,23 @@ function PrivateNotes() {
                     placeholder="Tiêu đề bí mật"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px' }}
+                    style={{ display: 'block', width: '100%', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
                 />
                 <textarea
                     placeholder="Nội dung bí mật"
                     value={formData.content}
                     onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    style={{ display: 'block', width: '100%', height: '80px', marginBottom: '10px', padding: '8px' }}
+                    style={{ display: 'block', width: '100%', height: '80px', marginBottom: '10px', padding: '8px', boxSizing: 'border-box' }}
                 />
                 <button 
                     onClick={handleSave} 
-                    style={{ padding: '8px 16px', cursor: 'pointer', backgroundColor: 'red', color: 'white', marginRight: '10px' }}
+                    style={{ padding: '8px 16px', cursor: 'pointer', backgroundColor: 'red', color: 'white', marginRight: '10px', border: 'none', borderRadius: '4px' }}
                 >
                     {formData.id ? 'Cập nhật' : 'Lưu bí mật'}
                 </button>
                 {formData.id && (
                     <button 
-                        onClick={() => setFormData({ id: null, title: '', content: '' })}
+                        onClick={handleCancelEdit}
                         style={{ padding: '8px 16px', cursor: 'pointer' }}
                     >
                         Hủy
@@ -153,7 +188,12 @@ function PrivateNotes() {
             {/* Danh sách */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                 {notes.length === 0 && <p>Chưa có ghi chú riêng tư nào.</p>}
-                {notes.map(note => (
+                {notes.length > 0 && filteredNotes.length === 0 && (
+                    <p style={{ color: '#999', fontStyle: 'italic', gridColumn: 'span 2', textAlign: 'center' }}>
+                        Không tìm thấy ghi chú nào khớp với từ khóa "{searchTerm}".
+                    </p>
+                )}
+                {filteredNotes.map(note => (
                     <div key={note.id} style={{ border: '1px solid red', padding: '15px', borderRadius: '5px' }}>
                         <h4 style={{ margin: '0 0 10px 0' }}>{note.title}</h4>
                         <p style={{ whiteSpace: 'pre-wrap' }}>{note.content}</p>
